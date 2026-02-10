@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MapboxFlight</title>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- Start screen -->
+  <div id="start-screen">
+    <h1>MapboxFlight</h1>
+    <p>Flyg over en 3D-varld med din kropp!</p>
+    <ul class="instructions">
+      <li>Flaxa armarna &rarr; flyg framat</li>
+      <li>Luta kroppen &rarr; svang</li>
+      <li>Armar upp/ner &rarr; stig/sjunk</li>
+    </ul>
+    <input id="address-input" type="text" placeholder="Startadress (t.ex. Drottninggatan, Stockholm)" />
+    <button id="start-btn">Start Flying</button>
+  </div>
+
+  <!-- Map container -->
+  <div id="map"></div>
+
+  <!-- Webcam overlay -->
+  <video id="webcam" autoplay playsinline muted></video>
+  <canvas id="pose-canvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="hud-altitude">Alt: 0 m</div>
+    <div id="hud-speed">Speed: 0</div>
+    <div id="hud-heading">Heading: 0&deg;</div>
+    <div id="hud-action">Idle</div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
