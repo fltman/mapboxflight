@@ -23,11 +23,13 @@ export function createMap(token) {
       maxzoom: 14,
     });
 
-    map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
+    map.setTerrain({ source: 'mapbox-dem', exaggeration: 2.5 });
 
     // Enable 3D buildings and landmarks via Standard style config
     try {
       map.setConfigProperty('basemap', 'show3dObjects', true);
+      map.setConfigProperty('basemap', 'showBuildings', true);
+      map.setConfigProperty('basemap', 'showPointOfInterestLabels', true);
     } catch (e) {
       // Fallback if config API not available
     }

@@ -11,7 +11,7 @@ export const FRICTION = 0.995;
 export const TURN_SPEED = 0.5; // degrees per frame
 export const CLIMB_RATE = 3; // meters per frame
 export const MIN_ALTITUDE = 200;
-export const MAX_ALTITUDE = 15000;
+export const MAX_ALTITUDE = 100000;
 
 // Smoothing
 export const LERP_FACTOR = 0.03;

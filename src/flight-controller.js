@@ -52,10 +52,23 @@ export class FlightController {
     this.altitude += this.smoothVertical * CLIMB_RATE;
     this.altitude = Math.max(MIN_ALTITUDE, Math.min(MAX_ALTITUDE, this.altitude));
 
+    // Higher altitude = faster ground speed: 2x@3km, 5x@10km, 10x@20km, 20x@30km+
+    const alt = this.altitude;
+    let altFactor;
+    if (alt <= 3000) {
+      altFactor = 1 + 1 * ((alt - MIN_ALTITUDE) / (3000 - MIN_ALTITUDE));
+    } else if (alt <= 10000) {
+      altFactor = 2 + 3 * ((alt - 3000) / 7000);
+    } else if (alt <= 20000) {
+      altFactor = 5 + 5 * ((alt - 10000) / 10000);
+    } else {
+      altFactor = 10 + 10 * Math.min((alt - 20000) / 10000, 1);
+    }
+
     // Move forward in heading direction
     const headingRad = (this.heading * Math.PI) / 180;
-    this.lng += Math.sin(headingRad) * this.speed;
-    this.lat += Math.cos(headingRad) * this.speed;
+    this.lng += Math.sin(headingRad) * this.speed * altFactor;
+    this.lat += Math.cos(headingRad) * this.speed * altFactor;
   }
 
   getState() {
