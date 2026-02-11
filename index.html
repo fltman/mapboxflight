@@ -39,6 +39,30 @@
     <div id="hud-action">Idle</div>
   </div>
 
+  <!-- Music player -->
+  <button id="music-toggle">Music</button>
+  <button id="music-skip">Skip</button>
+
+  <!-- Prompt settings panel -->
+  <button id="prompt-toggle">Prompt</button>
+  <div id="prompt-panel" class="hidden">
+    <div class="prompt-header">
+      <span>Narrator Prompt</span>
+      <button id="prompt-close">&times;</button>
+    </div>
+    <textarea id="prompt-text" rows="5"></textarea>
+    <div class="voice-id-row">
+      <label for="voice-id">ElevenLabs Voice ID</label>
+      <input id="voice-id" type="text" placeholder="e.g. 21m00Tcm4TlvDq8ikWAM" />
+    </div>
+    <div class="prompt-actions">
+      <select id="prompt-saved"><option value="">-- Sparade --</option></select>
+      <input id="prompt-name" type="text" placeholder="Namn" />
+      <button id="prompt-save">Spara</button>
+      <button id="prompt-delete">Ta bort</button>
+    </div>
+  </div>
+
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

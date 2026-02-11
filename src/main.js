@@ -4,7 +4,11 @@ import { interpretPose } from './pose-interpreter.js';
 import { FlightController } from './flight-controller.js';
 import { updateCamera } from './camera-driver.js';
 import { updateHUD, drawPose } from './hud.js';
-import { updateNarration } from './narrator.js';
+import { updateNarration, initPromptUI } from './narrator.js';
+import { initMusicPlayer } from './music.js';
+
+initPromptUI();
+initMusicPlayer();
 
 const token = import.meta.env.VITE_MAPBOX_TOKEN;
 if (!token || token === 'YOUR_MAPBOX_TOKEN_HERE') {
