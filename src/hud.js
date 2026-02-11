@@ -2,11 +2,13 @@ const altEl = document.getElementById('hud-altitude');
 const speedEl = document.getElementById('hud-speed');
 const headingEl = document.getElementById('hud-heading');
 const actionEl = document.getElementById('hud-action');
+const compassRing = document.getElementById('compass-ring');
 
 export function updateHUD(flightState, poseInput) {
   altEl.textContent = `Alt: ${Math.round(flightState.altitude)} m`;
   speedEl.textContent = `Speed: ${(flightState.speed * 100000).toFixed(1)}`;
   headingEl.innerHTML = `Heading: ${Math.round(flightState.heading)}&deg;`;
+  compassRing.style.transform = `rotate(${-flightState.heading}deg)`;
 
   const actions = [];
   if (poseInput.flapping) actions.push('Flapping');

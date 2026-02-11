@@ -177,6 +177,57 @@ body.flying #hud-narration {
   display: block;
 }
 
+/* ---- Compass ---- */
+#compass {
+  position: fixed;
+  top: 16px;
+  right: 270px;
+  z-index: 10;
+  display: none;
+  width: 80px;
+  height: 80px;
+}
+
+body.flying #compass {
+  display: block;
+}
+
+#compass-ring {
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(4px);
+  position: relative;
+  transition: transform 0.3s ease-out;
+}
+
+#compass-ring span {
+  position: absolute;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.compass-n { top: 4px; left: 50%; transform: translateX(-50%); color: #ff4444 !important; }
+.compass-s { bottom: 4px; left: 50%; transform: translateX(-50%); }
+.compass-e { right: 6px; top: 50%; transform: translateY(-50%); }
+.compass-w { left: 6px; top: 50%; transform: translateY(-50%); }
+
+#compass-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 30px;
+  background: linear-gradient(to top, transparent, #ff4444);
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+
 /* ---- Prompt panel ---- */
 #music-toggle,
 #music-skip,
