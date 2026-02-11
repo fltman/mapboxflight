@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "mapbox-gl": "^3.9.4"
+    "mapbox-gl": "^3.18.1"
   },
   "devDependencies": {
     "vite": "^6.1.0"

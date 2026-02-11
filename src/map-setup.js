@@ -6,7 +6,7 @@ export function createMap(token) {
 
   const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/satellite-streets-v12',
+    style: 'mapbox://styles/mapbox/standard-satellite',
     center: [START_LNG, START_LAT],
     zoom: 14,
     pitch: 70,
@@ -25,14 +25,12 @@ export function createMap(token) {
 
     map.setTerrain({ source: 'mapbox-dem', exaggeration: 1.5 });
 
-    // Atmospheric fog
-    map.setFog({
-      color: 'rgb(186, 210, 235)',
-      'high-color': 'rgb(36, 92, 223)',
-      'horizon-blend': 0.02,
-      'space-color': 'rgb(11, 11, 25)',
-      'star-intensity': 0.6,
-    });
+    // Enable 3D buildings and landmarks via Standard style config
+    try {
+      map.setConfigProperty('basemap', 'show3dObjects', true);
+    } catch (e) {
+      // Fallback if config API not available
+    }
   });
 
   return map;

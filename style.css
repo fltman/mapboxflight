@@ -111,6 +111,32 @@ body {
   transform: scaleX(-1);
 }
 
+/* ---- Narration bar ---- */
+#hud-narration {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: none;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 24px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+  white-space: nowrap;
+  max-width: 80vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.5s;
+}
+
+#hud-narration:empty {
+  opacity: 0;
+}
+
 /* ---- HUD ---- */
 #hud {
   position: fixed;
@@ -145,4 +171,8 @@ body.flying #pose-canvas {
 
 body.flying #hud {
   display: flex;
+}
+
+body.flying #hud-narration {
+  display: block;
 }
