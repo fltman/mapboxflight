@@ -8,9 +8,10 @@ const LS_PROMPT_KEY = 'mapboxflight_prompt';
 const LS_VOICE_KEY = 'mapboxflight_voice_id';
 const LS_SAVED_KEY = 'mapboxflight_saved_prompts';
 const MAX_HISTORY = 20; // keep last N exchanges to avoid token overflow
+const DEFAULT_VOICE_ID = '21m00Tcm4TlvDq8ikWAM'; // ElevenLabs premade "Rachel", used when no voice id is set
 
 const DEFAULT_PROMPT =
-  'You are Captain Sky, a cheerful and adventurous flight explorer narrating a live flyover. Talk like a friendly pilot chatting with passengers. Always mention the place name. Reference earlier places you flew over when relevant ("and just like we saw back at..."). Keep it to ONE short sentence (max 15 words). No period at the end. Be excited and warm!';
+  'You are Captain Sky, a cheerful and adventurous flight explorer narrating a live flyover. Talk like a friendly pilot chatting with passengers. Always mention the place name. You may occasionally reference a place you already named in one of your earlier replies ("just like back at..."), but never a place from the current Nearby list, and not in every line. Keep it to ONE short sentence (max 15 words). No period at the end. Be excited and warm!';
 
 let systemPrompt = localStorage.getItem(LS_PROMPT_KEY) || DEFAULT_PROMPT;
 let currentVoiceId = localStorage.getItem(LS_VOICE_KEY) || '';
@@ -121,7 +122,11 @@ function refreshSavedList(select) {
 
 // --- TTS via ElevenLabs ---
 async function speakText(text) {
-  if (!currentVoiceId || !ELEVENLABS_KEY || ELEVENLABS_KEY === 'YOUR_KEY') return;
+  if (!ELEVENLABS_KEY || ELEVENLABS_KEY === 'YOUR_KEY') {
+    console.warn('[TTS] VITE_ELEVENLABS_KEY missing – skipping speech');
+    return;
+  }
+  const voiceId = currentVoiceId || DEFAULT_VOICE_ID;
 
   // Stop previous audio
   if (currentAudio) {
@@ -131,7 +136,7 @@ async function speakText(text) {
 
   try {
     const res = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${currentVoiceId}`,
+      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
       {
         method: 'POST',
         headers: {
@@ -140,7 +145,7 @@ async function speakText(text) {
         },
         body: JSON.stringify({
           text,
-          model_id: 'eleven_multilingual_v2',
+          model_id: 'eleven_v4_turbo',
         }),
       }
     );
@@ -151,9 +156,12 @@ async function speakText(text) {
     }
 
     const blob = await res.blob();
-    const audio = new Audio(URL.createObjectURL(blob));
+    const url = URL.createObjectURL(blob);
+    const audio = new Audio(url);
+    audio.addEventListener('ended', () => URL.revokeObjectURL(url));
     currentAudio = audio;
-    audio.play();
+    await audio.play();
+    console.log('[TTS] playing with voice', voiceId);
   } catch (e) {
     console.warn('[TTS] error:', e);
   }
@@ -204,7 +212,7 @@ async function askNarrator(places, heading, altitude) {
       'X-Title': 'MapboxFlight',
     },
     body: JSON.stringify({
-      model: 'anthropic/claude-haiku-4.5',
+      model: 'google/gemini-3.5-flash-lite',
       max_tokens: 60,
       messages,
     }),
@@ -242,11 +250,11 @@ export async function updateNarration(flightState) {
   const now = Date.now();
   if (pendingRequest || now - lastNarrationTime < NARRATION_INTERVAL) return;
 
-  pendingRequest = true;
-  lastNarrationTime = now;
-
   const el = getNarrationEl();
   if (!el) return;
+
+  pendingRequest = true;
+  lastNarrationTime = now;
 
   try {
     const headingRad = (flightState.heading * Math.PI) / 180;

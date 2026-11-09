@@ -25,6 +25,7 @@ Flyg over en 3D-varld genom att rora kroppen framfor din webcam.
    npm install
    npm run dev
    ```
+   eller kor bara `./start.sh` (kontrollerar `.env`, installerar beroenden vid behov och startar dev-servern pa http://localhost:47613; `./start.sh --prod` bygger och kor preview, `PORT=xxxx ./start.sh` valjer annan port)
 4. Oppna sidan i Chrome, ange valfri startadress och klicka **Start Flying**
 
 ## Teknikstack
